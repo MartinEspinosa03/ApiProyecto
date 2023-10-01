@@ -4,6 +4,8 @@ const bcrypt = require('bcrypt');
 const cors = require("cors");
 const router = require("./router")
 
+//https://www.izertis.com         -    Encriptar password
+
 const app = express();
 app.use(cors());
 
@@ -16,13 +18,13 @@ function startServer(config) {
         useUnifiedTopology: true,
       })
       .then(() => {
-        console.log("Conectado a MongoDB");
+        console.log("connected to MongoDB");
         app.listen(port, () => {
-          console.log(`API corriendo en el puerto ${port}`);
+          console.log(`API running on port: ${port}`);
         });
       })
       .catch((err) => {
-        console.error("Error de conexión a MongoDB:", err);
+        console.error("Conection error to MongoDB:", err);
       });
   }
 
@@ -32,7 +34,7 @@ import("./config.mjs")
     startServer(config);
 })
 .catch((err) => {
-    console.error('Error al importar el modulo config: ', err);
+    console.error('Error when importing the module config: ', err);
 });
 
 app.use(express.json());

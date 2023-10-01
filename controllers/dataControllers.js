@@ -28,7 +28,31 @@ const createData = async (req, res) => {
     }
 };
 
+const updateData = async (req, res) => {
+    const newData = {
+        distance: req.body.distance,
+        velocity: req.body.velocity,
+        steps: req.body.steps,
+        heart_rate: req.body.heart_rate,
+        calories: req.body.calories,
+    };
+
+    try {
+        const data = await DataModels.findByIdAndUpdate(req.params.id, newData, {new: true});
+
+        if(!data) {
+            return res.status(404).json({ error: 'Data not found'})
+        }
+
+        res.json(data);
+    } catch (error) {
+        console.error('Error editing data', error);
+        res.status(500).json({ error: 'Error editin data '});
+    }
+};
+
 module.exports = {
     getData,
     createData,
+    updateData,
 }
