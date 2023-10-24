@@ -1,10 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const bcrypt = require('bcrypt');
 const cors = require("cors");
 const router = require("./router")
 
-//https://www.izertis.com         -    Encriptar password
 
 const app = express();
 app.use(cors());
