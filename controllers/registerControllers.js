@@ -1,8 +1,10 @@
 const bcrypt = require('bcrypt');
 const User = require("../models/registerModels");
+const jwt = require("jsonwebtoken");
 
 
 async function getUsers(req, res) {
+  jwt.verify(req.token, 'skysoft', async (error, authData) =>{
     try {
       const users = await User.find();
       res.json(users);
@@ -10,6 +12,7 @@ async function getUsers(req, res) {
       console.error('Error searching of users:', error);
       res.status(500).json({ error: 'Error searching of users' });
     }
+  })
   }
 
   

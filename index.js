@@ -1,11 +1,22 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const router = require("./router")
-
-
+const router = require("./router");
+var https = express();
+var fs = require('fs');
+const dotenv = require("dotenv");
 const app = express();
-app.use(cors());
+
+
+dotenv.config();
+
+https.createServer({
+  cert: fs.readFileSync(),
+  key: fs.readFileSync() 
+}, app).listen(port, function(){
+  console.log('Server https run in the port 2003');
+})
+
 
 function startServer(config) {
     const { port, mongoURI } = config.server;
@@ -34,6 +45,8 @@ import("./config.mjs")
 .catch((err) => {
     console.error('Error when importing the module config: ', err);
 });
+
+app.use(cors());
 
 app.use(express.json());
 
