@@ -2,20 +2,20 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const router = require("./router");
-var https = express();
-var fs = require('fs');
+//var https = express();
+//var fs = require('fs');
 const dotenv = require("dotenv");
 const app = express();
 
 
 dotenv.config();
 
-https.createServer({
-  cert: fs.readFileSync(),
-  key: fs.readFileSync() 
-}, app).listen(port, function(){
-  console.log('Server https run in the port 2003');
-})
+// https.createServer({
+//   cert: fs.readFileSync(),
+//   key: fs.readFileSync() 
+// }, app).listen(port, function(){
+//   console.log('Server https run in the port 2003');
+// })
 
 
 function startServer(config) {

@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const router = require("express").Router();
 const User = require('./models/registerModels');
+const verifyToken = require("./function.js");
 
 const {
     getUsers,
@@ -8,11 +9,11 @@ const {
     updateUser,
 } = require("./controllers/registerControllers");
 
-router.get("/users", getUsers);
+router.get("/users", verifyToken, getUsers);
 
-router.post("/users", createUser);
+router.post("/users", verifyToken, createUser);
 
-router.put("/users/:id", updateUser);
+router.put("/users/:id", verifyToken, updateUser);
 
 router.post('/login', async (req, res) => {
     try{
@@ -43,10 +44,10 @@ const {
     updateData,
 } = require("./controllers/dataControllers");
 
-router.get("/data", getData);
+router.get("/data", verifyToken, getData);
 
-router.post("/data", createData);
+router.post("/data", verifyToken, createData);
 
-router.put("/data/:id", updateData);
+router.put("/data/:id", verifyToken, updateData);
 
 module.exports = router;
