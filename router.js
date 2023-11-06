@@ -1,42 +1,20 @@
-const bcrypt = require('bcrypt');
 const router = require("express").Router();
-const User = require('./models/registerModels');
 const verifyToken = require("./function.js");
 
 const {
     getUsers,
     createUser,
     updateUser,
+    validacionUser,
 } = require("./controllers/registerControllers");
 
 router.get("/users", verifyToken, getUsers);
 
 router.post("/users", verifyToken, createUser);
 
-router.put("/users/:id", verifyToken, updateUser);
+router.put("/users/:id", updateUser);
 
-router.post('/login', async (req, res) => {
-    try{
-        const { username, password } = req.body;
-
-        const user = await User.findOne({ username });
-
-        if(!user) {
-            return res.status(401).json({ error: 'User not found' });
-        }
-
-        const passwordMatch = await bcrypt.compare(password, user.password);
-
-        if(!passwordMatch) {
-            return res.status(401).json({ error: 'Incorrect password'});
-        }
-
-        res.status(200).json({ message: 'Successful login'});
-    }catch (error) {
-        console.error('Error when logging in', error);
-        res.status(500).json({ error: 'Internal Server Error'});
-    }
-});
+router.get('/login/:userUsername/:userPassword', validacionUser);
 
 const {
     getData,
@@ -44,10 +22,10 @@ const {
     updateData,
 } = require("./controllers/dataControllers");
 
-router.get("/data", verifyToken, getData);
+router.get("/data", getData);
 
-router.post("/data", verifyToken, createData);
+router.post("/data", createData);
 
-router.put("/data/:id", verifyToken, updateData);
+router.put("/data/:id", updateData);
 
 module.exports = router;

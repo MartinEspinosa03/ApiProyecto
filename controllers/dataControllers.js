@@ -1,17 +1,13 @@
 const DataModels = require("../models/dataModels");
-const jwt = require('jsonwebtoken')
 
 async function getData(req, res) {
-    jwt.verify(req.token, 'skysoft', async (error, authData) => {
-        try{
-            const data = await DataModels.find();
-            res.json(data);
-        } catch (error) {
-            console.error("Error searching of data:", error);
-            res.status(500).json({ error: 'Error searching of data' });
+    DataModels.find((err, data) => {
+        if (err) {
+            res.send(err);
         }
-    })
-}
+        res.json(data);
+    });
+};
 
 const createData = async (req, res) => {
     try{

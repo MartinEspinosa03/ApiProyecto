@@ -1,19 +1,18 @@
 const bcrypt = require('bcrypt');
 const User = require("../models/registerModels");
-const jwt = require("jsonwebtoken");
+const jwt = require("jsonwebtoken")
 
 
 async function getUsers(req, res) {
-  jwt.verify(req.token, 'skysoft', async (error, authData) =>{
-    try {
-      const users = await User.find();
-      res.json(users);
-    } catch (error) {
-      console.error('Error searching of users:', error);
-      res.status(500).json({ error: 'Error searching of users' });
-    }
+  jwt.verify(req.token, 'skysoftsecurity', (error, authData) => {
+    User.find((err, user) => {
+      if(err){
+        res.send(err);
+      }
+      res.json(user)
+    })
   })
-  }
+}
 
   
 const createUser = async (req, res) => {
@@ -74,9 +73,35 @@ const updateUser = async (req, res) => {
     res.status(500).json({ error: 'Error editing user' });
   }
 };
+
+const validacionUser = async (req, res) => {
+  try {
+    const { userUsername, userPassword } = req.params;
+    const user = await User.findOne({ username: userUsername }).exec();
+
+    if (!user) {
+      return res.status(400).send({ message: "User not found" });
+    }
+
+    const passwordMatch = await bcrypt.compare(userPassword, user.password);
+
+    if (passwordMatch) {
+      const token = jwt.sign({ user: user }, "skysoftsecurity");
+
+      return res.status(200).json({ message: "Login successful"});
+    } else {
+      return res.status(400).send({ message: "Incorrect password" });
+    }
+  } catch (error) {
+    console.error('Error in login', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+}
+
   
 module.exports = {
     getUsers,
     createUser,
     updateUser,
+    validacionUser,
 };

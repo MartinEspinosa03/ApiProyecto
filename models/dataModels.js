@@ -23,4 +23,4 @@ const dataModels = new mongoose.Schema({
     },
 });
 
-module.exports = mongoose.model("Data of smart bib", dataModels);
+module.exports = mongoose.model("DataModels", dataModels);
