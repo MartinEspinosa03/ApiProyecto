@@ -13,8 +13,7 @@ async function getUsers(req, res) {
     })
   })
 }
-
-  
+ 
 const createUser = async (req, res) => {
   try {
     const { name, lastname, username, email, password, age, sex, weight, height } = req.body;
@@ -88,7 +87,7 @@ const validacionUser = async (req, res) => {
     if (passwordMatch) {
       const token = jwt.sign({ user: user }, "skysoftsecurity");
 
-      return res.status(200).json({ message: "Login successful"});
+      return res.status(200).json({ message: "Login successful", "data": user});
     } else {
       return res.status(400).send({ message: "Incorrect password" });
     }

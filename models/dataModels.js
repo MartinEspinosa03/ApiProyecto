@@ -9,15 +9,19 @@ const dataModels = new mongoose.Schema({
         type: String,
         required: true,
     },
-    steps: {
-        type: String,
-        required: true,
-    },
     heart_rate: {
         type: String,
         required: true,
     },
     calories: {
+        type: String,
+        required: true,
+    },
+    temperature: {
+        type: String,
+        required: true,
+    },
+    oxygenation: {
         type: String,
         required: true,
     },
