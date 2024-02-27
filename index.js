@@ -2,49 +2,34 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const router = require("./router");
-//var https = express();
-//var fs = require('fs');
+// var https = require('https');
+// var fs = require('fs');
 const dotenv = require("dotenv");
 const app = express();
-
+ 
 
 dotenv.config();
+const PORT = process.env.PORT || 2003;
 
 // https.createServer({
-//   cert: fs.readFileSync(),
-//   key: fs.readFileSync() 
-// }, app).listen(port, function(){
-//   console.log('Server https run in the port 2003');
+//   cert: fs.readFileSync("fullchain.pem"),
+//   key: fs.readFileSync("privkey.pem") 
+// }, app).listen(PORT, function(){
+//   console.log('Server https run in the port: ', PORT);
 // })
 
-
-function startServer(config) {
-    const { port, mongoURI } = config.server;
-  
     mongoose
-      .connect(mongoURI, {
+      .connect(process.env.MONGOURL, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
       })
       .then(() => {
+        console.log("Server run in the port: ", PORT);
         console.log("connected to MongoDB");
-        app.listen(port, () => {
-          console.log(`API running on port: ${port}`);
-        });
       })
       .catch((err) => {
         console.error("Conection error to MongoDB:", err);
       });
-  }
-
-import("./config.mjs")
-.then((module) => {
-    const { config } = module;
-    startServer(config);
-})
-.catch((err) => {
-    console.error('Error when importing the module config: ', err);
-});
 
 app.use(cors());
 
